@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:oklch(0.17 0.004 260);color:oklch(0.95 0.006 260);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased">
+
+  <sc-if value="{{ isGallery }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="{{ galleryLabel }}">
+      <div style="position:sticky;top:0;z-index:10;background:oklch(0.17 0.004 260 / 92%);backdrop-filter:blur(10px);padding:20px 20px 16px;border-bottom:1px solid oklch(1 0 0 / 6%)">
+        <div style="max-width:1100px;margin:0 auto">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.01em">Wuthering Waves — Guia Pessoal</div>
+          <div style="display:flex;gap:4px;background:oklch(0.24 0.006 260);border-radius:999px;padding:4px;width:fit-content;margin-top:14px">
+            <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="2">
+              <button onClick="{{ tab.onClick }}" style="padding:8px 18px;border-radius:999px;font-size:13px;font-family:'Manrope',sans-serif;font-weight:700;cursor:pointer;border:none;background:{{ tab.bg }};color:{{ tab.color }}">{{ tab.label }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ isCharGallery }}">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+              <sc-for list="{{ elementFilters }}" as="chip" hint-placeholder-count="7">
+                <button onClick="{{ chip.onClick }}" style="padding:7px 14px;border-radius:999px;font-size:13px;font-family:'Manrope',sans-serif;font-weight:600;cursor:pointer;border:1px solid {{ chip.borderColor }};background:{{ chip.bg }};color:{{ chip.textColor }}">{{ chip.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isMechGallery }}">
+            <div style="font-size:13px;color:oklch(0.68 0.01 260);margin-top:14px">Sistemas e mecânicas do jogo, sem depender de personagem.</div>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ isCharGallery }}">
+        <div style="padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;max-width:1100px;margin:0 auto">
+          <sc-for list="{{ filteredCharacters }}" as="c" hint-placeholder-count="10">
+            <div onClick="{{ c.onClick }}" style="cursor:{{ c.cursor }};background:oklch(0.21 0.006 260);border:1px solid {{ c.borderColor }};border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px;opacity:{{ c.opacity }}">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-{{ c.id }}-full" shape="rounded" radius="12" fit="cover" placeholder="Arte vertical PNG" style="width:100%;aspect-ratio:3/4" hint-size="150px,200px"></x-import>
+              <div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">{{ c.name }}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                  <span style="width:8px;height:8px;border-radius:50%;background:{{ c.elementColor }};flex-shrink:0"></span>
+                  <span style="font-size:11px;color:oklch(0.68 0.01 260)">{{ c.elementLabel }} · {{ c.role }}</span>
+                </div>
+              </div>
+              <sc-if value="{{ c.showBadge }}">
+                <div style="font-size:10px;font-weight:700;letter-spacing:.05em;color:oklch(0.55 0.01 260);text-transform:uppercase">Em construção</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMechGallery }}">
+        <div style="padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;max-width:1100px;margin:0 auto">
+          <sc-for list="{{ mechanics }}" as="m" hint-placeholder-count="6">
+            <div onClick="{{ m.onClick }}" style="cursor:pointer;background:oklch(0.21 0.006 260);border:1px solid oklch(1 0 0 / 10%);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-mech-{{ m.id }}" shape="rounded" radius="12" fit="cover" placeholder="Ícone / diagrama" style="width:100%;aspect-ratio:1" hint-size="150px,150px"></x-import>
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">{{ m.name }}</div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:.05em;color:oklch(0.55 0.01 260);text-transform:uppercase">Em construção</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCharDetail }}">
+    <div data-screen-label="{{ selected.name }}">
+      <div style="max-width:1100px;margin:0 auto;padding:20px 20px 80px">
+        <button onClick="{{ onBackGallery }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:oklch(0.68 0.01 260);font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:18px">← Voltar</button>
+
+        <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-{{ selected.id }}-full" shape="rounded" radius="14" fit="cover" placeholder="Arte vertical PNG" style="width:120px;aspect-ratio:3/4;border:2px solid {{ accentColor }};flex-shrink:0" hint-size="120px,160px"></x-import>
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700">{{ selected.name }}</div>
+            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+              <span style="background:{{ selected.elementBg }};color:{{ accentColor }};border:1px solid {{ accentColor }};border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700">{{ selected.elementLabel }}</span>
+              <span style="background:oklch(0.24 0.006 260);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;color:oklch(0.8 0.008 260)">{{ selected.role }}</span>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ selected.ready }}">
+          <div style="{{ layoutStyle }}">
+            <sc-if value="{{ isDesktop }}">
+              <div style="position:sticky;top:20px;align-self:start;display:flex;flex-direction:column;gap:2px;padding-top:4px">
+                <sc-for list="{{ sections }}" as="s" hint-placeholder-count="6">
+                  <button onClick="{{ s.onClick }}" style="text-align:left;padding:8px 12px;border-radius:8px;border:none;background:none;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;color:oklch(0.68 0.01 260);cursor:pointer">{{ s.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+
+              <div id="sec-overview" style="background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px 18px;scroll-margin-top:80px">
+                <div onClick="{{ toggleOverview }}" style="display:flex;align-items:center;justify-content:space-between;cursor:{{ sectionCursor }}">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ accentColor }}"></span>
+                    <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">Visão Geral</span>
+                  </div>
+                  <sc-if value="{{ isMobile }}"><span style="font-size:12px;color:oklch(0.6 0.01 260)">{{ overviewChevron }}</span></sc-if>
+                </div>
+                <sc-if value="{{ showOverview }}">
+                  <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap">
+                      <div style="background:oklch(0.24 0.006 260);border-radius:8px;padding:6px 10px;font-size:12px"><span style="color:oklch(0.6 0.01 260)">Elemento </span><span style="font-weight:700">{{ selected.elementLabel }}</span></div>
+                      <div style="background:oklch(0.24 0.006 260);border-radius:8px;padding:6px 10px;font-size:12px"><span style="color:oklch(0.6 0.01 260)">Papel </span><span style="font-weight:700">{{ selected.role }}</span></div>
+                      <div style="background:oklch(0.24 0.006 260);border-radius:8px;padding:6px 10px;font-size:12px"><span style="color:oklch(0.6 0.01 260)">Arma </span><span style="font-weight:700">{{ selected.weapon }}</span></div>
+                      <div style="background:oklch(0.24 0.006 260);border-radius:8px;padding:6px 10px;font-size:12px"><span style="color:oklch(0.6 0.01 260)">Raridade </span><span style="font-weight:700;color:{{ accentColor }}">{{ selected.rarityStars }}</span></div>
+                    </div>
+                    <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:oklch(0.85 0.008 260)">
+                      <sc-for list="{{ selected.overviewBullets }}" as="b" hint-placeholder-count="4">
+                        <li>{{ b }}</li>
+                      </sc-for>
+                    </ul>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="sec-echoes" style="background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px 18px;scroll-margin-top:80px">
+                <div onClick="{{ toggleEchoes }}" style="display:flex;align-items:center;justify-content:space-between;cursor:{{ sectionCursor }}">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ accentColor }}"></span>
+                    <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">Echoes</span>
+                  </div>
+                  <sc-if value="{{ isMobile }}"><span style="font-size:12px;color:oklch(0.6 0.01 260)">{{ echoesChevron }}</span></sc-if>
+                </div>
+                <sc-if value="{{ showEchoes }}">
+                  <div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+                    <sc-for list="{{ selected.echoSets }}" as="set" hint-placeholder-count="3">
+                      <div style="background:oklch(0.24 0.006 260);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+                        <div style="display:flex;align-items:center;gap:10px">
+                          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-echo-{{ set.slug }}" shape="rounded" radius="8" fit="cover" placeholder="Ícone" style="width:32px;height:32px;flex-shrink:0" hint-size="32px,32px"></x-import>
+                          <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:{{ accentColor }}">{{ set.label }}</div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12.5px">
+                          <span style="color:oklch(0.6 0.01 260)">Custo</span><span>{{ set.cost }}</span>
+                          <span style="color:oklch(0.6 0.01 260)">Stat principal</span><span>{{ set.mainStat }}</span>
+                          <span style="color:oklch(0.6 0.01 260)">Sub-stat</span><span>{{ set.subStat }}</span>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="sec-synergy" style="background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px 18px;scroll-margin-top:80px">
+                <div onClick="{{ toggleSynergy }}" style="display:flex;align-items:center;justify-content:space-between;cursor:{{ sectionCursor }}">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ accentColor }}"></span>
+                    <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">Sinergia de Time</span>
+                  </div>
+                  <sc-if value="{{ isMobile }}"><span style="font-size:12px;color:oklch(0.6 0.01 260)">{{ synergyChevron }}</span></sc-if>
+                </div>
+                <sc-if value="{{ showSynergy }}">
+                  <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+                    <sc-for list="{{ selected.synergyPairs }}" as="pair" hint-placeholder-count="2">
+                      <div style="background:oklch(0.24 0.006 260);border-radius:999px;padding:8px 16px 8px 8px;display:flex;align-items:center;gap:8px;width:fit-content">
+                        <sc-for list="{{ pair.members }}" as="m" hint-placeholder-count="3">
+                          <sc-if value="{{ m.sep }}"><span style="color:oklch(0.55 0.01 260);font-weight:700;font-size:13px">+</span></sc-if>
+                          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-{{ m.id }}-thumb" shape="rounded" radius="8" fit="cover" placeholder="Mini" style="width:28px;height:28px;flex-shrink:0" hint-size="28px,28px"></x-import>
+                          <span style="font-size:13px;font-weight:600">{{ m.name }}</span>
+                        </sc-for>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="sec-weapons" style="background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px 18px;scroll-margin-top:80px">
+                <div onClick="{{ toggleWeapons }}" style="display:flex;align-items:center;justify-content:space-between;cursor:{{ sectionCursor }}">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ accentColor }}"></span>
+                    <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">Opções de Arma</span>
+                  </div>
+                  <sc-if value="{{ isMobile }}"><span style="font-size:12px;color:oklch(0.6 0.01 260)">{{ weaponsChevron }}</span></sc-if>
+                </div>
+                <sc-if value="{{ showWeapons }}">
+                  <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+                    <sc-for list="{{ selected.weapons }}" as="w" hint-placeholder-count="5">
+                      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:oklch(0.24 0.006 260);border-radius:10px;padding:8px 14px 8px 8px;font-size:13px">
+                        <div style="display:flex;align-items:center;gap:10px;min-width:0">
+                          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-weapon-{{ w.slug }}" shape="rounded" radius="8" fit="cover" placeholder="Ícone" style="width:36px;height:36px;flex-shrink:0" hint-size="36px,36px"></x-import>
+                          <span style="font-weight:600">{{ w.name }}</span>
+                        </div>
+                        <span style="color:oklch(0.65 0.01 260);font-size:12px;flex-shrink:0">{{ w.stat }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="sec-priority" style="background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px 18px;scroll-margin-top:80px">
+                <div onClick="{{ togglePriority }}" style="display:flex;align-items:center;justify-content:space-between;cursor:{{ sectionCursor }}">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ accentColor }}"></span>
+                    <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">Prioridade de Habilidades</span>
+                  </div>
+                  <sc-if value="{{ isMobile }}"><span style="font-size:12px;color:oklch(0.6 0.01 260)">{{ priorityChevron }}</span></sc-if>
+                </div>
+                <sc-if value="{{ showPriority }}">
+                  <div style="margin-top:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.5px">
+                    <sc-for list="{{ selected.priorityChips }}" as="p" hint-placeholder-count="5">
+                      <sc-if value="{{ p.sep }}"><span style="color:oklch(0.55 0.01 260);font-weight:700">{{ p.sep }}</span></sc-if>
+                      <span style="background:oklch(0.24 0.006 260);border:1px solid {{ accentColor }};border-radius:8px;padding:6px 10px;font-weight:600">{{ p.label }}</span>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selected.notReady }}">
+          <div style="margin-top:24px;background:oklch(0.2 0.005 260);border:1px dashed oklch(1 0 0 / 12%);border-radius:16px;padding:24px;font-size:13px;color:oklch(0.6 0.01 260)">Guia em construção — volte em breve.</div>
+        </sc-if>
+
+      </div>
+
+      <sc-if value="{{ isMobile }}">
+        <button onClick="{{ toggleToc }}" style="position:fixed;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;background:{{ accentColor }};border:none;box-shadow:0 4px 16px oklch(0 0 0 / 40%);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20;font-size:20px;color:oklch(0.15 0 0)">☰</button>
+
+        <sc-if value="{{ tocOpen }}">
+          <div onClick="{{ toggleToc }}" style="position:fixed;inset:0;background:oklch(0 0 0 / 50%);z-index:25"></div>
+          <div style="position:fixed;left:0;right:0;bottom:0;background:oklch(0.22 0.006 260);border-radius:20px 20px 0 0;padding:16px 16px 24px;z-index:26;display:flex;flex-direction:column;gap:2px">
+            <div style="width:36px;height:4px;background:oklch(1 0 0 / 15%);border-radius:2px;margin:0 auto 12px"></div>
+            <sc-for list="{{ sections }}" as="s" hint-placeholder-count="6">
+              <button onClick="{{ s.onClick }}" style="text-align:left;padding:12px 10px;border-radius:8px;border:none;background:none;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;color:oklch(0.9 0.006 260);cursor:pointer">{{ s.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMechDetail }}">
+    <div data-screen-label="{{ selectedMech.name }}">
+      <div style="max-width:1100px;margin:0 auto;padding:20px 20px 80px">
+        <button onClick="{{ onBackGallery }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:oklch(0.68 0.01 260);font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:18px">← Voltar</button>
+        <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-mech-{{ selectedMech.id }}" shape="rounded" radius="14" fit="cover" placeholder="Ícone / diagrama" style="width:96px;height:96px;flex-shrink:0" hint-size="96px,96px"></x-import>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700">{{ selectedMech.name }}</div>
+        </div>
+        <div style="margin-top:24px;background:oklch(0.2 0.005 260);border:1px dashed oklch(1 0 0 / 12%);border-radius:16px;padding:24px;font-size:13px;color:oklch(0.6 0.01 260)">Guia em construção — volte em breve.</div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ELEMENTS = {
+  aero: { label: 'Aero', color: 'oklch(0.75 0.14 175)' },
+  electro: { label: 'Electro', color: 'oklch(0.72 0.16 300)' },
+  fusion: { label: 'Fusão', color: 'oklch(0.72 0.17 35)' },
+  glacio: { label: 'Glacio', color: 'oklch(0.75 0.13 230)' },
+  havoc: { label: 'Havoc', color: 'oklch(0.65 0.18 340)' },
+  spectro: { label: 'Spectro', color: 'oklch(0.8 0.15 95)' }
+};
+
+function withAlpha(color, pct) {
+  return color.replace(')', ' / ' + pct + '%)');
+}
+
+const CHARACTERS = [
+  { id: 'cartethyia', name: 'Cartethyia', element: 'aero', role: 'Dano Principal', ready: true },
+  { id: 'jinhsi', name: 'Jinhsi', element: 'spectro', role: 'Dano Principal', ready: false },
+  { id: 'changli', name: 'Changli', element: 'fusion', role: 'Dano Principal', ready: false },
+  { id: 'camellya', name: 'Camellya', element: 'havoc', role: 'Dano Principal', ready: false },
+  { id: 'carlotta', name: 'Carlotta', element: 'glacio', role: 'Dano Principal', ready: false },
+  { id: 'zhezhi', name: 'Zhezhi', element: 'spectro', role: 'Suporte', ready: false },
+  { id: 'shorekeeper', name: 'Shorekeeper', element: 'spectro', role: 'Suporte', ready: false },
+  { id: 'verina', name: 'Verina', element: 'spectro', role: 'Suporte', ready: false },
+  { id: 'yinlin', name: 'Yinlin', element: 'electro', role: 'Sub-DPS', ready: false },
+  { id: 'calcharo', name: 'Calcharo', element: 'electro', role: 'Dano Principal', ready: false },
+  { id: 'jiyan', name: 'Jiyan', element: 'aero', role: 'Dano Principal', ready: false },
+  { id: 'encore', name: 'Encore', element: 'fusion', role: 'Dano Principal', ready: false },
+  { id: 'xiangliyao', name: 'Xiangli Yao', element: 'electro', role: 'Dano Principal', ready: false },
+  { id: 'zani', name: 'Zani', element: 'havoc', role: 'Dano Principal', ready: false },
+  { id: 'roccia', name: 'Roccia', element: 'havoc', role: 'Sub-DPS', ready: false },
+  { id: 'brant', name: 'Brant', element: 'fusion', role: 'Suporte', ready: false },
+  { id: 'cantarella', name: 'Cantarella', element: 'havoc', role: 'Sub-DPS', ready: false },
+  { id: 'augusta', name: 'Augusta', element: 'electro', role: 'Dano Principal', ready: false },
+  { id: 'phoebe', name: 'Phoebe', element: 'spectro', role: 'Dano Principal', ready: false },
+  { id: 'sigrika', name: 'Sigrika', element: 'aero', role: 'Dano Principal', ready: false }
+];
+
+const MECHANICS = [
+  { id: 'echoes', name: 'Sistema de Echoes' },
+  { id: 'ressonancia', name: 'Cadeia de Ressonância' },
+  { id: 'combate', name: 'Combate e Esquiva' },
+  { id: 'exploracao', name: 'Exploração' },
+  { id: 'convocacao', name: 'Convocação (Gacha)' },
+  { id: 'torre', name: 'Torre da Adversidade' }
+];
+
+const CARTETHYIA_DATA = {
+  weapon: 'Espada',
+  rarityStars: '★★★★★',
+  overviewBullets: [
+    'Escala com HP, não com ATK',
+    'Empilha Erosão Aero pra amplificar dano',
+    'Melhor com Windward Pilgrimage (5 peças)',
+    'Buff de ATK no time não afeta o kit dela'
+  ],
+  echoSets: [
+    { label: 'Set principal (4-4-1-1-1)', cost: '4 / 4 / 1 / 1 / 1', mainStat: 'Crit. Rate / Crit. DMG', subStat: 'Crit Rate/DMG > HP% > Dano Base% > HP', slug: 'echo-a' },
+    { label: 'Variante B (4-1-1-1-1)', cost: '4 / 1 / 1 / 1 / 1', mainStat: 'Crit. Rate / HP%', subStat: 'Crit Rate/DMG > HP% > Dano Base% > HP', slug: 'echo-b' },
+    { label: 'Variante C (foco Aero)', cost: '4 / 3 / 3 / 1 / 1', mainStat: 'Crit. Rate / Dano Aero%', subStat: 'Crit Rate/DMG > HP% > Dano Base% > HP', slug: 'echo-c' }
+  ],
+  synergyPairs: [
+    { members: [
+      { id: 'cartethyia', name: 'Cartethyia', sep: false },
+      { id: 'ciaconna', name: 'Ciaconna', sep: true }
+    ] },
+    { members: [
+      { id: 'cartethyia', name: 'Cartethyia', sep: false },
+      { id: 'sanhua', name: 'Sanhua', sep: true },
+      { id: 'aero-rover', name: 'Aero Rover', sep: true }
+    ] }
+  ],
+  weapons: [
+    { name: 'Defier’s Thorn (sig)', stat: 'ATK 412 · HP 72,2%', slug: 'defiers-thorn' },
+    { name: 'Red Spring', stat: 'ATK 587 · Crit Rate 24,3%', slug: 'red-spring' },
+    { name: 'Blazing Brilliance', stat: 'ATK 587 · Crit DMG 48,6%', slug: 'blazing-brilliance' },
+    { name: 'Emerald of Genesis', stat: 'ATK 587 · Crit Rate 24,3%', slug: 'emerald-of-genesis' },
+    { name: 'Guardian Sword', stat: 'ATK 300 · HP 30,4%', slug: 'guardian-sword' }
+  ],
+  priorityChips: [
+    { label: 'Circuito Forte', sep: null },
+    { label: 'Liberação de Ressonância', sep: '>' },
+    { label: 'Ataque Normal', sep: '>' },
+    { label: 'Habilidade de Ressonância', sep: '>>' },
+    { label: 'Habilidade de Introdução', sep: '=' }
+  ]
+};
+
+const SECTION_IDS = ['overview', 'echoes', 'synergy', 'weapons', 'priority'];
+const SECTION_LABELS = {
+  overview: 'Visão Geral',
+  echoes: 'Echoes',
+  synergy: 'Sinergia de Time',
+  weapons: 'Opções de Arma',
+  priority: 'Prioridade de Habilidades'
+};
+
+class Component extends DCLogic {
+  state = {
+    activeTab: 'characters',
+    screen: 'gallery',
+    activeFilter: 'all',
+    activeCharId: null,
+    activeMechId: null,
+    isDesktop: typeof window !== 'undefined' ? window.innerWidth >= 900 : true,
+    sectionsOpen: { overview: true, echoes: false, synergy: false, weapons: false, priority: false },
+    tocOpen: false
+  };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ isDesktop: window.innerWidth >= 900 });
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  selectTab(key) {
+    this.setState({ activeTab: key, screen: 'gallery' });
+    window.scrollTo({ top: 0 });
+  }
+
+  openCharacter(id) {
+    this.setState({
+      activeTab: 'characters',
+      screen: 'detail',
+      activeCharId: id,
+      sectionsOpen: { overview: true, echoes: false, synergy: false, weapons: false, priority: false },
+      tocOpen: false
+    });
+    window.scrollTo({ top: 0 });
+  }
+
+  openMechanic(id) {
+    this.setState({ activeTab: 'mechanics', screen: 'detail', activeMechId: id });
+    window.scrollTo({ top: 0 });
+  }
+
+  backToGallery() {
+    this.setState({ screen: 'gallery' });
+    window.scrollTo({ top: 0 });
+  }
+
+  toggleSection(id) {
+    this.setState(s => ({ sectionsOpen: { ...s.sectionsOpen, [id]: !s.sectionsOpen[id] } }));
+  }
+
+  jumpToSection(id) {
+    this.setState(s => ({ sectionsOpen: { ...s.sectionsOpen, [id]: true }, tocOpen: false }));
+    requestAnimationFrame(() => {
+      const el = document.getElementById('sec-' + id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - (this.state.isDesktop ? 90 : 80);
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  }
+
+  renderVals() {
+    const state = this.state;
+    const isGallery = state.screen === 'gallery';
+    const isCharGallery = isGallery && state.activeTab === 'characters';
+    const isMechGallery = isGallery && state.activeTab === 'mechanics';
+    const isCharDetail = state.screen === 'detail' && state.activeTab === 'characters';
+    const isMechDetail = state.screen === 'detail' && state.activeTab === 'mechanics';
+    const galleryLabel = isMechGallery ? 'Mecânicas' : 'Ressonadores';
+
+    const tabDefs = [
+      { key: 'characters', label: 'Ressonadores' },
+      { key: 'mechanics', label: 'Mecânicas' }
+    ];
+    const tabs = tabDefs.map(t => {
+      const active = state.activeTab === t.key;
+      return {
+        key: t.key,
+        label: t.label,
+        onClick: () => this.selectTab(t.key),
+        bg: active ? 'oklch(0.95 0.006 260)' : 'transparent',
+        color: active ? 'oklch(0.16 0.004 260)' : 'oklch(0.68 0.01 260)'
+      };
+    });
+
+    const mechanics = MECHANICS.map(m => ({
+      id: m.id,
+      name: m.name,
+      onClick: () => this.openMechanic(m.id)
+    }));
+    const selectedMech = MECHANICS.find(m => m.id === state.activeMechId) || MECHANICS[0];
+
+    const elementFilters = [{ key: 'all', label: 'Todos' }].concat(
+      Object.keys(ELEMENTS).map(k => ({ key: k, label: ELEMENTS[k].label }))
+    ).map(f => {
+      const active = state.activeFilter === f.key;
+      const color = f.key === 'all' ? 'oklch(0.85 0.006 260)' : ELEMENTS[f.key].color;
+      return {
+        key: f.key,
+        label: f.label,
+        onClick: () => this.setState({ activeFilter: f.key }),
+        bg: active ? withAlpha(color, 16) : 'transparent',
+        borderColor: active ? color : 'oklch(1 0 0 / 12%)',
+        textColor: active ? color : 'oklch(0.75 0.01 260)'
+      };
+    });
+
+    const filteredCharacters = CHARACTERS.filter(c => state.activeFilter === 'all' || c.element === state.activeFilter).map(c => {
+      const el = ELEMENTS[c.element];
+      return {
+        id: c.id,
+        name: c.name,
+        elementLabel: el.label,
+        elementColor: el.color,
+        role: c.role,
+        showBadge: !c.ready,
+        cursor: 'pointer',
+        opacity: c.ready ? 1 : 0.55,
+        borderColor: withAlpha(el.color, c.ready ? 35 : 12),
+        onClick: () => this.openCharacter(c.id)
+      };
+    });
+
+    const activeChar = CHARACTERS.find(c => c.id === state.activeCharId) || CHARACTERS[0];
+    const el = ELEMENTS[activeChar.element];
+    const accentColor = isCharDetail ? el.color : 'oklch(0.75 0.01 260)';
+
+    let selected = {
+      id: activeChar.id,
+      name: activeChar.name,
+      elementLabel: el.label,
+      role: activeChar.role,
+      elementBg: withAlpha(el.color, 14),
+      ready: activeChar.ready,
+      notReady: !activeChar.ready
+    };
+    if (activeChar.ready && activeChar.id === 'cartethyia') {
+      selected = Object.assign(selected, CARTETHYIA_DATA);
+    }
+
+    const isDesktop = state.isDesktop;
+    const isMobile = !state.isDesktop;
+    const sectionCursor = isMobile ? 'pointer' : 'default';
+
+    const sections = SECTION_IDS.map(id => ({
+      id,
+      label: SECTION_LABELS[id],
+      onClick: () => this.jumpToSection(id)
+    }));
+
+    const showVals = {};
+    const chevronVals = {};
+    SECTION_IDS.forEach(id => {
+      showVals[id] = isDesktop || !!state.sectionsOpen[id];
+      chevronVals[id] = state.sectionsOpen[id] ? '▾' : '▸';
+    });
+
+    return {
+      isGallery,
+      isCharGallery,
+      isMechGallery,
+      isCharDetail,
+      isMechDetail,
+      galleryLabel,
+      tabs,
+      mechanics,
+      selectedMech,
+      isDesktop,
+      isMobile,
+      elementFilters,
+      filteredCharacters,
+      onBackGallery: () => this.backToGallery(),
+      accentColor,
+      selected,
+      sections,
+      layoutStyle: isDesktop ? 'display:grid;grid-template-columns:200px 1fr;gap:24px;margin-top:24px' : 'display:block;margin-top:20px',
+      sectionCursor,
+      toggleOverview: () => this.toggleSection('overview'),
+      toggleEchoes: () => this.toggleSection('echoes'),
+      toggleSynergy: () => this.toggleSection('synergy'),
+      toggleWeapons: () => this.toggleSection('weapons'),
+      togglePriority: () => this.toggleSection('priority'),
+      showOverview: showVals.overview,
+      showEchoes: showVals.echoes,
+      showSynergy: showVals.synergy,
+      showWeapons: showVals.weapons,
+      showPriority: showVals.priority,
+      overviewChevron: chevronVals.overview,
+      echoesChevron: chevronVals.echoes,
+      synergyChevron: chevronVals.synergy,
+      weaponsChevron: chevronVals.weapons,
+      priorityChevron: chevronVals.priority,
+      tocOpen: state.tocOpen,
+      toggleToc: () => this.setState(s => ({ tocOpen: !s.tocOpen }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>
