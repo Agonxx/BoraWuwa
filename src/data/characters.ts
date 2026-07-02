@@ -89,4 +89,116 @@ export const CHARACTERS: Character[] = [
   { id: 'augusta', name: 'Augusta', element: 'electro', role: 'Dano Principal', ready: false },
   { id: 'phoebe', name: 'Phoebe', element: 'spectro', role: 'Dano Principal', ready: false },
   { id: 'sigrika', name: 'Sigrika', element: 'aero', role: 'Dano Principal', ready: false },
+  {
+    id: 'phrolova',
+    name: 'Phrolova',
+    element: 'havoc',
+    role: 'Dano Principal',
+    ready: true,
+    detail: {
+      weapon: 'Retificador',
+      rarityStars: '★★★★★',
+      overviewBullets: [
+        'Ataca em campo e fora dele — Hecate luta por ela enquanto ela está trocada',
+        'Liberação de Ressonância custa 0 Energia, não depende de Regen de Energia',
+        'Empilha Aftersound (até 24) pra Crit. DMG crescente ao longo da rotação',
+        'Já tem tanto ATK próprio que buff de ATK do time rende pouco',
+        'Extremamente dependente da arma-assinatura — sem ela o dano cai muito',
+      ],
+      echoSets: [
+        {
+          label: 'Dream of the Lost + Havoc Eclipse (recomendado)',
+          cost: '4 / 3 / 3 / 1 / 1',
+          mainStat: 'Crit. Rate / Crit. DMG',
+          subStat: 'Crit Rate/DMG > ATK% > Dano de Habilidade% > ATK',
+          slug: 'havoc-eclipse',
+        },
+        {
+          label: 'Dream of the Lost + Endless Resonance',
+          cost: '4 / 3 / 3 / 1 / 1',
+          mainStat: 'Crit. Rate / Crit. DMG',
+          subStat: 'Crit Rate/DMG > ATK% > Dano de Habilidade% > ATK',
+          slug: 'endless-resonance',
+        },
+        {
+          label: 'Dream of the Lost + Frosty Resolve',
+          cost: '4 / 3 / 3 / 1 / 1',
+          mainStat: 'Crit. Rate / Crit. DMG',
+          subStat: 'Crit Rate/DMG > ATK% > Dano de Habilidade% > ATK',
+          slug: 'frosty-resolve',
+        },
+      ],
+      synergyPairs: [
+        {
+          members: [
+            { id: 'phrolova', name: 'Phrolova' },
+            { id: 'lucilla', name: 'Lucilla' },
+            { id: 'qiuyuan', name: 'Qiuyuan' },
+          ],
+        },
+        {
+          members: [
+            { id: 'phrolova', name: 'Phrolova' },
+            { id: 'sigrika', name: 'Sigrika' },
+            { id: 'roccia', name: 'Roccia' },
+          ],
+        },
+        {
+          members: [
+            { id: 'phrolova', name: 'Phrolova' },
+            { id: 'galbrena', name: 'Galbrena' },
+            { id: 'jiyan', name: 'Jiyan' },
+          ],
+        },
+        {
+          members: [
+            { id: 'phrolova', name: 'Phrolova' },
+            { id: 'phoebe', name: 'Phoebe' },
+            { id: 'rover-spectro', name: 'Rover (Spectro)' },
+          ],
+        },
+        {
+          members: [
+            { id: 'phrolova', name: 'Phrolova' },
+            { id: 'danjin', name: 'Danjin' },
+            { id: 'shorekeeper', name: 'Shorekeeper' },
+          ],
+        },
+      ],
+      weapons: [
+        {
+          name: 'Lethean Elegy (assinatura)',
+          stat: '100% desempenho · ATK / Crit Rate / Dano de Habilidade / Ignora DEF',
+          slug: 'lethean-elegy',
+        },
+        {
+          name: 'Stringmaster',
+          stat: '82% desempenho · ATK / Crit Rate / Dano%',
+          slug: 'stringmaster',
+        },
+        {
+          name: 'Whispers of Sirens',
+          stat: '80,2% desempenho · Shred de RES Havoc no Forte',
+          slug: 'whispers-of-sirens',
+        },
+        {
+          name: 'Rime-Draped Sprouts',
+          stat: '77,1% desempenho · ATK / Crit. DMG',
+          slug: 'rime-draped-sprouts',
+        },
+        {
+          name: 'Luminous Hymn',
+          stat: '75,2% desempenho · ATK / Crit Rate',
+          slug: 'luminous-hymn',
+        },
+      ],
+      priorityChips: [
+        { label: 'Liberação de Ressonância', sep: null },
+        { label: 'Ataque Normal', sep: '>' },
+        { label: 'Circuito Forte', sep: '>' },
+        { label: 'Habilidade de Introdução', sep: '>>' },
+        { label: 'Habilidade de Ressonância', sep: '=' },
+      ],
+    },
+  },
 ];

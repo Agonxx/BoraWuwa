@@ -1,4 +1,5 @@
 import type { Character } from '../../data/types';
+import { echoImageSrc } from '../../data/images';
 import { ImageSlot } from '../ImageSlot';
 
 export function EchoesSection({ character, accentColor }: { character: Character; accentColor: string }) {
@@ -25,7 +26,12 @@ export function EchoesSection({ character, accentColor }: { character: Character
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <ImageSlot alt="Ícone" radius={8} style={{ width: 32, height: 32, flexShrink: 0 }} />
+            <ImageSlot
+              src={echoImageSrc(set.slug)}
+              alt={set.label}
+              radius={8}
+              style={{ width: 32, height: 32, flexShrink: 0 }}
+            />
             <div
               style={{
                 fontFamily: 'Space Grotesk, sans-serif',

@@ -1,4 +1,5 @@
 import type { Character } from '../../data/types';
+import { weaponImageSrc } from '../../data/images';
 import { ImageSlot } from '../ImageSlot';
 
 export function WeaponsSection({ character }: { character: Character }) {
@@ -21,7 +22,12 @@ export function WeaponsSection({ character }: { character: Character }) {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-            <ImageSlot alt="Ícone" radius={8} style={{ width: 36, height: 36, flexShrink: 0 }} />
+            <ImageSlot
+              src={weaponImageSrc(w.slug)}
+              alt={w.name}
+              radius={8}
+              style={{ width: 36, height: 36, flexShrink: 0 }}
+            />
             <span style={{ fontWeight: 600 }}>{w.name}</span>
           </div>
           <span style={{ color: 'var(--text-dim-1)', fontSize: 12, flexShrink: 0 }}>

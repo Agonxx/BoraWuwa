@@ -19,15 +19,17 @@ Spec de design completo em [`Design/README.md`](Design/README.md) e no protótip
 
 ```
 src/
-  data/            — types, elements (cores por elemento), characters (roster de 20), mechanics (6 itens), images (mapa de thumbnails reais)
+  data/            — types, elements (cores por elemento), characters (roster de 21: 20 + Phrolova), mechanics (6 itens), images (mapa de thumbnails/ícones de arma/echo reais)
   components/       — TabBar, FilterChip, CharacterCard, MechanicCard, ImageSlot (compartilhados)
   components/characters/ — galeria, detalhe, seções (Overview/Echoes/Synergy/Weapons/Priority), TOC desktop, bottom sheet mobile
   components/mechanics/  — galeria e detalhe (placeholder puro por enquanto)
   hooks/useIsDesktop.ts — breakpoint 900px via JS (não CSS media query)
   styles/global.css — tokens de design (cores, raios, fontes)
-public/img/characters/ — thumbnails reais (baixadas de wuthering.gg) dos personagens do roster + 3 nomes usados em Sinergia de Time
+public/img/characters/ — thumbnails reais (wuthering.gg) dos personagens do roster + Phrolova (arte especial, ver abaixo) + nomes usados em Sinergia de Time
+public/img/weapons/    — ícones de arma (prydwen.gg), guardados por slug e reutilizáveis entre personagens que citam a mesma arma
+public/img/echoes/     — ícones de set de echo (prydwen.gg), mesma lógica de reuso por slug
 Design/ — spec de design original (README + protótipo .dc.html + screenshots), mantido como referência versionada
-mini/   — pasta com os thumbnails brutos baixados de wuthering.gg (52 de 53 personagens do jogo, além dos 20 usados aqui)
+mini/   — pasta com os thumbnails brutos baixados de wuthering.gg (52 de 53 personagens do jogo, além dos usados no roster)
 ```
 
 ## O que já funciona
@@ -42,18 +44,18 @@ mini/   — pasta com os thumbnails brutos baixados de wuthering.gg (52 de 53 pe
 - [x] Layout desktop (sidebar TOC fixa + tudo expandido) vs mobile (accordion + botão flutuante ☰ + bottom sheet), breakpoint 900px via JS
 - [x] Scroll suave até seção ao clicar em item da TOC/bottom sheet
 - [x] Detalhe de mecânica: shell mínimo (ícone + título + aviso de construção)
-- [x] Thumbnails reais (recorte quadrado) para os 20 personagens do roster + Ciaconna/Sanhua/Aero Rover (usados em Sinergia de Time) — portraits 3:4 grandes ainda são placeholder, já que a fonte só tinha ícone quadrado 100×100
+- [x] Thumbnails reais (recorte quadrado) para os 20 personagens do roster + Ciaconna/Sanhua/Aero Rover (usados em Sinergia de Time) — portraits 3:4 grandes ainda são placeholder pra maioria, já que a fonte só tinha ícone quadrado 100×100
 - [x] Verificado via Playwright headless: as duas galerias, filtro, navegação entre abas, detalhe pronto/não-pronto, accordion mobile, bottom sheet — sem erros de console
-- [x] Git inicializado na raiz do projeto
+- [x] Git inicializado na raiz do projeto, primeiro commit feito e publicado em [github.com/Agonxx/BoraWuwa](https://github.com/Agonxx/BoraWuwa)
+- [x] **Phrolova (guia completo)** — extraída de [prydwen.gg/wuthering-waves/characters/phrolova](https://www.prydwen.gg/wuthering-waves/characters/phrolova): overview, 3 variantes de echo (Dream of the Lost + 2pc à escolha), top 5 armas com % de desempenho, 5 times de exemplo, prioridade de habilidades. Primeiro personagem com **arte vertical real** (`phrolova_full.webp` da Prydwen) no lugar do ícone quadrado, e primeiro com **ícones reais de arma e echo** (baixados de `cdn.prydwen.gg`, guardados em `public/img/weapons/` e `public/img/echoes/` por slug, reutilizáveis por qualquer outro personagem que cite a mesma arma/set)
 
 ## Pendências / próximos passos
 
-- [ ] **Fazer o primeiro commit e criar o repositório no GitHub** (ainda não foi criado remoto nem feito push — só está local)
-- [ ] **Arte vertical 3:4** dos personagens (portrait/hero grande) — hoje usa o mesmo ícone quadrado 100×100 esticado via `object-fit: cover`, funciona mas não é a arte "de verdade" prevista no spec (`img-{id}-full`, PNG vertical transparente)
-- [ ] **Ícones de arma e de echo** (36×36 e 32×32) — ainda são só placeholders tracejados, nenhuma arte disponível ainda
-- [ ] **Conteúdo dos outros 19 personagens** — só Cartethyia tem guia completo; os demais mostram "Guia em construção". Preencher `detail` em `src/data/characters.ts` conforme forem sendo estudados
+- [ ] **Arte vertical 3:4** dos demais personagens (portrait/hero grande) — só a Phrolova tem arte vertical de verdade agora; o resto usa o ícone quadrado 100×100 esticado via `object-fit: cover`. Repetir o processo da Phrolova (buscar `{id}_full.webp` na Prydwen) quando fizer sentido
+- [ ] **Rover (Spectro)** — segue sem imagem confiável (usado na sinergia da Phrolova, aparece como placeholder). A página wuthering.gg/characters retornou o mesmo ID de imagem do Rover (Aero) pra ele, que é suspeito; não usar até confirmar manualmente
+- [ ] **Conteúdo dos outros 19 personagens do roster original** — só Cartethyia e Phrolova têm guia completo; os demais mostram "Guia em construção". Preencher `detail` em `src/data/characters.ts` conforme forem sendo estudados (o fluxo Phrolova — link de guia → extrair texto/imagens → preencher `characters.ts` + baixar assets em `public/img/` — é reaproveitável)
 - [ ] **Conteúdo das 6 Mecânicas** — nenhum modelo de dado foi definido ainda (README trata isso como "intencionalmente vazio"); quando o primeiro guia de mecânica for escrito, desenhar a estrutura de seções pra ela (provavelmente parecida com as seções de personagem, mas isso é uma decisão em aberto)
-- [ ] **Corrigir/confirmar o Rover (Spectro)** — não foi baixado; a página fonte (wuthering.gg/characters) retornou o mesmo ID de imagem do Rover (Aero), que é suspeito. Verificar manualmente antes de usar
+- [ ] **Stats numéricos de arma** (tipo "ATK 412 · HP 72,2%" que a Cartethyia tem) — pra Phrolova usamos o % de desempenho da Prydwen em vez de rolls exatos, porque a página de guia não expõe isso (só a página de banco de dados de armas teria). Se quiser esse nível de detalhe, precisa de outra busca dedicada
 - [ ] **Nomes com grafia divergente**: usamos `ciaconna` no dado interno (vindo do protótipo original) mas o asset baixado de wuthering.gg está com o nome `ciaccona` (grafia oficial provável) — ficou consistente porque renomeei o arquivo copiado, mas vale revisar a grafia correta em algum momento
 - [ ] Deploy (Vercel/Netlify/GitHub Pages?) — ainda não decidido; lembrar que rotas tipo `/cartethyia` recarregadas direto precisam de fallback SPA configurado no host escolhido
 
@@ -71,3 +73,5 @@ npm run lint      # oxlint
 - TypeScript, não JS puro
 - Design/ e mini/ ficam dentro do próprio repositório, versionados, como referência viva
 - Imagens: usar os thumbnails reais já baixados como estão (recorte quadrado) até ter arte vertical de verdade — decisão pragmática, não estava no plano original que previa só placeholder
+- Imagens de arma/echo ficam em pastas próprias por slug (`public/img/weapons/`, `public/img/echoes/`), não por personagem — assim qualquer personagem futuro que use a mesma arma/set reaproveita o arquivo já baixado, sem rebaixar
+- Quando um personagem tem arte vertical de verdade disponível (caso da Phrolova), ela substitui o ícone quadrado padrão via um mapa de overrides em `src/data/images.ts` — o resto do roster continua no fallback quadrado até ganhar a mesma atenção
