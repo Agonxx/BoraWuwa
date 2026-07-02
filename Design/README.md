@@ -152,6 +152,38 @@ Naming convention used in the prototype (carry this over to your asset folder so
 
 ## Files
 - `Wuthering Waves Hub.dc.html` — the full design reference (markup + inline styles + state logic in one file). Search for the `CHARACTERS`, `MECHANICS`, `CARTETHYIA_DATA`, `ELEMENTS` constants near the bottom for all copy and data values.
-- `screenshots/` — reference captures: `01-home-desktop`, `02-home-mobile`, `03-character-detail-desktop`, `04-character-detail-mobile`, `05-mechanics-gallery`. The mobile shots are true ~390px-wide captures showing the 2-column grid and the accordion + floating nav button in context.
+- `Weapon Card Design.dc.html` — a revised design for the "Opções de Arma" row inside a character's detail screen (see Addendum below). Replace the current inline weapon-row markup with this pattern when implementing.
+- `Priority Section Design.dc.html` — a revised design for "Prioridade de Habilidades" (see Addendum below), desktop and mobile variants side by side.
+- `screenshots/` — reference captures: `01-home-desktop`, `02-home-mobile`, `03-character-detail-desktop`, `04-character-detail-mobile`, `05-mechanics-gallery`, `06-weapon-card-proposal`. The mobile shots are true ~390px-wide captures showing the 2-column grid and the accordion + floating nav button in context.
+
+## Addendum — Ability priority labels & layout
+Ability names were relabeled to the short in-game-shorthand set: **Básico** (Ataque Normal), **Habilidade** (Habilidade de Ressonância), **Ultimate** (Liberação de Ressonância), **Intro** (Habilidade de Introdução), **Forte** (Circuito Forte). Use these five short labels everywhere in this section instead of the long official names.
+
+Both layouts below are driven by ONE ordered data source per character: a sequence of `{ label, sep }` where `sep` is `null` (first item), `'>'` (clearly higher priority than previous), `'>>'` (much higher priority than previous), or `'='` (tied with previous). Do not maintain separate desktop/mobile priority data — derive both views from this single sequence, the same way `Priority Section Design.dc.html` does in its `buildPriorityView()` helper.
+
+**Desktop** — kept the existing horizontal chip row (bordered pill per ability, accent-colored border), but made the separators between chips legible instead of plain small dim text:
+- `>` / `>>` (real priority gap): large (17px), bold (800), colored with the character's accent color.
+- `=` (tie): small (12px), bold (700), neutral dim gray — visually recedes since it's not conveying a ranking.
+
+**Mobile** — replaced the chip row entirely (it's what collided/wrapped badly on narrow screens) with a stacked bar list, one row per ability:
+- Convert the `sep` sequence to a 0–100 relative weight: first item = 100; each subsequent item subtracts 20 for `>`, 40 for `>>`, or keeps the same weight for `=` (floor of 20).
+- Render each ability as: label + tier word above a thin (8px) rounded bar; bar width = that weight; bar fill = the character's accent color at an opacity tied to a 4-step tier — **Essencial** (≥90, 100% opacity), **Alta** (≥70, 75%), **Média** (≥50, 50%), **Baixa** (<50, 32%). The tier word next to the label uses the same color/opacity as its bar.
+- This list never needs horizontal space for a second column, so it can't collide at any viewport width — that was the actual bug being fixed (the old inline-badge layout depended on remaining horizontal space next to a name of unpredictable length).
+
+See `Priority Section Design.dc.html` for the full working markup + weight/tier calculation, built against a placeholder five-ability sequence.
+
+## Addendum — Weapon card redesign
+The original "Opções de Arma" section rendered each weapon as a horizontal row (small icon + name on the left, stat text on the right). At mobile widths the stat text wrapped and collided with the name — unusable. Replace it with a card grid instead:
+
+- Grid: `display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px` (drop to `minmax(100px,1fr)` / `gap:8px` on narrow containers). Auto-fill means the column count adapts to available width with no explicit breakpoint — this is what fixes the mobile collision, since nothing depends on text measuring the remaining space next to a fixed-width icon.
+- Each card: `background: oklch(0.24 0.006 260)`, `border-radius: 14px` (12px at the smaller mobile size), `padding: 10px` (8px mobile), flex column, `gap: 8px` (6px mobile).
+- Icon area: square (`aspect-ratio:1`), `border-radius:10px`, background chip `oklch(0.29 0.006 260)`, `padding:8-10px`, image inside uses `object-fit: contain` (not `cover`) — weapon icons are diagonal compositions on transparent backgrounds, `contain` keeps the whole icon visible inside the chip instead of cropping/overflowing it.
+- Below the icon: the % value in large type (Space Grotesk 700, 20px desktop / 16px mobile) with a small `%` suffix, and a tiny uppercase "desempenho" label (9.5px, 700, dim) underneath.
+- 1px divider (`oklch(1 0 0 / 8%)`) separating the % block from the text block below it.
+- Weapon name (13px/700) + stat line (11px, dim) below the divider.
+- Signature/assinatura weapon: card border tinted with the element accent color at ~45% alpha, plus a small pill badge ("Assinatura") pinned to the top-right corner of the icon area (accent-color background, dark text) — replaces the old inline "(assinatura)" text suffix, which crowded the name.
+- % color ramps with value against the character's accent color: ≥95% uses the full accent color, 80–94% uses a slightly dimmed neutral, <80% uses the standard dim text color — gives an at-a-glance read of which weapons are "worth it" without a chart.
+
+See `Weapon Card Design.dc.html` for the full working markup (desktop-width and ~360px mobile-width examples side by side) and `screenshots/06-weapon-card-proposal.png` for a rendered reference with a real weapon icon dropped in.
 - `image-slot.js` — the placeholder drag-and-drop image component used in the prototype (author's own tool, for previewing only — not meant to be ported into your app; replace with plain `<img>` tags wired to real assets).
 - `support.js` — internal runtime harness that makes the `.dc.html` file render in a browser during design. Not relevant to your implementation — ignore it.

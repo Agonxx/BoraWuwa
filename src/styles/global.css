@@ -5,6 +5,7 @@
   --surface-1: oklch(0.21 0.006 260);
   --surface-2: oklch(0.2 0.005 260);
   --surface-3: oklch(0.24 0.006 260);
+  --surface-4: oklch(0.29 0.006 260);
   --border-subtle: oklch(1 0 0 / 7%);
   --border-subtle-strong: oklch(1 0 0 / 12%);
   --text-primary: oklch(0.95 0.006 260);

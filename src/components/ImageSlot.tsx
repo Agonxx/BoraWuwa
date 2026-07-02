@@ -4,10 +4,11 @@ interface ImageSlotProps {
   src?: string;
   alt: string;
   radius?: number;
+  fit?: CSSProperties['objectFit'];
   style?: CSSProperties;
 }
 
-export function ImageSlot({ src, alt, radius = 8, style }: ImageSlotProps) {
+export function ImageSlot({ src, alt, radius = 8, fit = 'cover', style }: ImageSlotProps) {
   if (src) {
     return (
       <img
@@ -15,7 +16,7 @@ export function ImageSlot({ src, alt, radius = 8, style }: ImageSlotProps) {
         alt={alt}
         style={{
           borderRadius: radius,
-          objectFit: 'cover',
+          objectFit: fit,
           ...style,
         }}
       />

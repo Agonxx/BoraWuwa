@@ -24,12 +24,16 @@ export interface SynergyMember {
 
 export interface SynergyPair {
   members: SynergyMember[];
+  rotation: string;
+  notes: string[];
 }
 
 export interface Weapon {
   name: string;
   stat: string;
   slug: string;
+  pct: number;
+  isSignature?: boolean;
 }
 
 export interface PriorityChip {

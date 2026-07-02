@@ -2,77 +2,6 @@ import type { Character } from './types';
 
 export const CHARACTERS: Character[] = [
   {
-    id: 'cartethyia',
-    name: 'Cartethyia',
-    element: 'aero',
-    weaponType: 'sword',
-    rarity: 5,
-    role: 'Dano Principal',
-    ready: true,
-    detail: {
-      weapon: 'Espada',
-      rarityStars: '★★★★★',
-      overviewBullets: [
-        'Escala com HP, não com ATK',
-        'Empilha Erosão Aero pra amplificar dano',
-        'Melhor com Windward Pilgrimage (5 peças)',
-        'Buff de ATK no time não afeta o kit dela',
-      ],
-      echoSets: [
-        {
-          label: 'Set principal (4-4-1-1-1)',
-          cost: '4 / 4 / 1 / 1 / 1',
-          mainStat: 'Crit. Rate / Crit. DMG',
-          subStat: 'Crit Rate/DMG > HP% > Dano Base% > HP',
-          slug: 'echo-a',
-        },
-        {
-          label: 'Variante B (4-1-1-1-1)',
-          cost: '4 / 1 / 1 / 1 / 1',
-          mainStat: 'Crit. Rate / HP%',
-          subStat: 'Crit Rate/DMG > HP% > Dano Base% > HP',
-          slug: 'echo-b',
-        },
-        {
-          label: 'Variante C (foco Aero)',
-          cost: '4 / 3 / 3 / 1 / 1',
-          mainStat: 'Crit. Rate / Dano Aero%',
-          subStat: 'Crit Rate/DMG > HP% > Dano Base% > HP',
-          slug: 'echo-c',
-        },
-      ],
-      synergyPairs: [
-        {
-          members: [
-            { id: 'cartethyia', name: 'Cartethyia' },
-            { id: 'ciaccona', name: 'Ciaccona' },
-          ],
-        },
-        {
-          members: [
-            { id: 'cartethyia', name: 'Cartethyia' },
-            { id: 'sanhua', name: 'Sanhua' },
-            { id: 'rover-aero', name: 'Rover (Aero)' },
-          ],
-        },
-      ],
-      weapons: [
-        { name: 'Defier’s Thorn (sig)', stat: 'ATK 412 · HP 72,2%', slug: 'defiers-thorn' },
-        { name: 'Red Spring', stat: 'ATK 587 · Crit Rate 24,3%', slug: 'red-spring' },
-        { name: 'Blazing Brilliance', stat: 'ATK 587 · Crit DMG 48,6%', slug: 'blazing-brilliance' },
-        { name: 'Emerald of Genesis', stat: 'ATK 587 · Crit Rate 24,3%', slug: 'emerald-of-genesis' },
-        { name: 'Guardian Sword', stat: 'ATK 300 · HP 30,4%', slug: 'guardian-sword' },
-      ],
-      priorityChips: [
-        { label: 'Circuito Forte', sep: null },
-        { label: 'Liberação de Ressonância', sep: '>' },
-        { label: 'Ataque Normal', sep: '>' },
-        { label: 'Habilidade de Ressonância', sep: '>>' },
-        { label: 'Habilidade de Introdução', sep: '=' },
-      ],
-    },
-  },
-  {
     id: 'phrolova',
     name: 'Phrolova',
     element: 'havoc',
@@ -120,12 +49,25 @@ export const CHARACTERS: Character[] = [
             { id: 'lucilla', name: 'Lucilla' },
             { id: 'qiuyuan', name: 'Qiuyuan' },
           ],
+          rotation:
+            'Phrolova (gera Notas Voláteis, invoca Hecate) → Outro → Qiuyuan (Forte/Liberação de buff) → Outro → Lucilla (dano pessoal) → repete',
+          notes: [
+            'Qiuyuan buffa Crit. DMG e Dano de Habilidade de Eco via Forte, Liberação e Outro',
+            'Lucilla amplifica o Dano de Eco do time inteiro além do próprio dano',
+            'Lucilla rende mais no 2º slot com Qiuyuan no 3º — evitar junto de The Shorekeeper',
+          ],
         },
         {
           members: [
             { id: 'phrolova', name: 'Phrolova' },
             { id: 'sigrika', name: 'Sigrika' },
             { id: 'roccia', name: 'Roccia' },
+          ],
+          rotation:
+            'Phrolova (Circuito Forte, invoca Hecate) → Outro → Roccia (empilha Imaginação, Liberação de buff de ATK) → Outro → Sigrika (dano de Habilidade de Eco em campo) → repete',
+          notes: [
+            'Roccia contribui buff de ATK pro time além do próprio dano Havoc',
+            'Sigrika escala com Habilidade de Eco em campo, somando com o dano fora de campo da Hecate',
           ],
         },
         {
@@ -134,12 +76,24 @@ export const CHARACTERS: Character[] = [
             { id: 'galbrena', name: 'Galbrena' },
             { id: 'jiyan', name: 'Jiyan' },
           ],
+          rotation:
+            'Phrolova (Circuito Forte, invoca Hecate) → Outro → Galbrena (cura/buff) → Outro → Jiyan (combo em campo) → repete',
+          notes: [
+            'Galbrena mantém o time vivo com cura/buff durante os loops de Hecate',
+            'Jiyan entra como DPS de campo quando o dano de Eco do time não está disponível',
+          ],
         },
         {
           members: [
             { id: 'phrolova', name: 'Phrolova' },
             { id: 'phoebe', name: 'Phoebe' },
             { id: 'rover-spectro', name: 'Rover (Spectro)' },
+          ],
+          rotation:
+            'Phrolova (Circuito Forte, invoca Hecate) → Outro → Phoebe/Rover (Spectro) (combo em campo) → repete',
+          notes: [
+            'Phoebe e Rover (Spectro) somam dano Spectro adicional e utilidade de time',
+            'Bom terceiro slot quando não há suporte de Dano de Eco disponível',
           ],
         },
         {
@@ -148,33 +102,45 @@ export const CHARACTERS: Character[] = [
             { id: 'danjin', name: 'Danjin' },
             { id: 'the-shorekeeper', name: 'The Shorekeeper' },
           ],
+          rotation:
+            'Phrolova (Circuito Forte, invoca Hecate) → Outro → The Shorekeeper (cura/buff) → Outro → Danjin (dano em campo) → repete',
+          notes: [
+            'The Shorekeeper cura e buffa o time, sustentando a rotação em conteúdo mais longo',
+            'Danjin assume o dano em campo enquanto Hecate ataca fora dele',
+          ],
         },
       ],
       weapons: [
         {
-          name: 'Lethean Elegy (assinatura)',
-          stat: '100% desempenho · ATK / Crit Rate / Dano de Habilidade / Ignora DEF',
+          name: 'Lethean Elegy',
+          stat: 'ATK / Crit Rate / Dano de Habilidade / Ignora DEF',
           slug: 'lethean-elegy',
+          pct: 100,
+          isSignature: true,
         },
         {
           name: 'Stringmaster',
-          stat: '82% desempenho · ATK / Crit Rate / Dano%',
+          stat: 'ATK / Crit Rate / Dano%',
           slug: 'stringmaster',
+          pct: 82,
         },
         {
           name: 'Whispers of Sirens',
-          stat: '80,2% desempenho · Shred de RES Havoc no Forte',
+          stat: 'Shred de RES Havoc no Forte',
           slug: 'whispers-of-sirens',
+          pct: 80.2,
         },
         {
           name: 'Rime-Draped Sprouts',
-          stat: '77,1% desempenho · ATK / Crit. DMG',
+          stat: 'ATK / Crit. DMG',
           slug: 'rime-draped-sprouts',
+          pct: 77.1,
         },
         {
           name: 'Luminous Hymn',
-          stat: '75,2% desempenho · ATK / Crit Rate',
+          stat: 'ATK / Crit Rate',
           slug: 'luminous-hymn',
+          pct: 75.2,
         },
       ],
       priorityChips: [
@@ -198,6 +164,7 @@ export const CHARACTERS: Character[] = [
   { id: 'camellya', name: 'Camellya', element: 'havoc', weaponType: 'sword', rarity: 5, role: 'Dano Principal', ready: false },
   { id: 'cantarella', name: 'Cantarella', element: 'havoc', weaponType: 'rectifier', rarity: 5, role: 'Sub-DPS', ready: false },
   { id: 'carlotta', name: 'Carlotta', element: 'glacio', weaponType: 'pistols', rarity: 5, role: 'Dano Principal', ready: false },
+  { id: 'cartethyia', name: 'Cartethyia', element: 'aero', weaponType: 'sword', rarity: 5, role: 'Dano Principal', ready: false },
   { id: 'changli', name: 'Changli', element: 'fusion', weaponType: 'sword', rarity: 5, role: 'Dano Principal', ready: false },
   { id: 'chisa', name: 'Chisa', element: 'havoc', weaponType: 'broadblade', rarity: 5, ready: false },
   { id: 'chixia', name: 'Chixia', element: 'fusion', weaponType: 'pistols', rarity: 4, ready: false },

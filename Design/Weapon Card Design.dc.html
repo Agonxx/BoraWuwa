@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body { margin: 0; }</style>
+</helmet>
+
+<div style="min-height:100vh;background:oklch(0.17 0.004 260);color:oklch(0.95 0.006 260);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;padding:24px 20px 60px" data-screen-label="Weapon Card">
+  <div style="max-width:640px;margin:0 auto">
+
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:oklch(0.6 0.01 260);letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px">Proposta — card de arma</div>
+
+    <div style="background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px 18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="width:8px;height:8px;border-radius:50%;background:{{ accentColor }}"></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px">Opções de Arma</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px">
+        <sc-for list="{{ weapons }}" as="w" hint-placeholder-count="5">
+          <div style="position:relative;background:oklch(0.24 0.006 260);border:1px solid {{ w.borderColor }};border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px">
+            <sc-if value="{{ w.isSignature }}">
+              <div style="position:absolute;top:8px;right:8px;background:{{ accentColor }};color:oklch(0.15 0 0);font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:2px 7px;z-index:1">Assinatura</div>
+            </sc-if>
+            <div style="width:100%;aspect-ratio:1;border-radius:10px;background:oklch(0.29 0.006 260);overflow:hidden;padding:10px;box-sizing:border-box">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-weapon-{{ w.slug }}" src="./assets/weapon-sample.png" shape="rect" fit="contain" placeholder="Ícone" style="width:100%;height:100%" hint-size="110px,110px"></x-import>
+            </div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;line-height:1;color:{{ w.pctColor }}">{{ w.pct }}<span style="font-size:12px;font-weight:700">%</span></div>
+              <div style="font-size:9.5px;font-weight:700;color:oklch(0.55 0.01 260);text-transform:uppercase;letter-spacing:.03em;margin-top:2px">desempenho</div>
+            </div>
+            <div style="height:1px;background:oklch(1 0 0 / 8%)"></div>
+            <div>
+              <div style="font-size:13px;font-weight:700;line-height:1.25">{{ w.name }}</div>
+              <div style="font-size:11px;color:oklch(0.62 0.01 260);margin-top:3px;line-height:1.3">{{ w.stat }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:oklch(0.6 0.01 260);letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px">Mesmo card — largura mobile (~360px)</div>
+    <div style="max-width:360px;background:oklch(0.2 0.005 260);border:1px solid oklch(1 0 0 / 7%);border-radius:16px;padding:16px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px">
+        <sc-for list="{{ weapons }}" as="w2" hint-placeholder-count="5">
+          <div style="position:relative;background:oklch(0.24 0.006 260);border:1px solid {{ w2.borderColor }};border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px">
+            <sc-if value="{{ w2.isSignature }}">
+              <div style="position:absolute;top:6px;right:6px;background:{{ accentColor }};color:oklch(0.15 0 0);font-size:8px;font-weight:800;text-transform:uppercase;border-radius:999px;padding:2px 6px;z-index:1">Sig.</div>
+            </sc-if>
+            <div style="width:100%;aspect-ratio:1;border-radius:8px;background:oklch(0.29 0.006 260);overflow:hidden;padding:8px;box-sizing:border-box">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="img-weapon-{{ w2.slug }}" src="./assets/weapon-sample.png" shape="rect" fit="contain" placeholder="Ícone" style="width:100%;height:100%" hint-size="84px,84px"></x-import>
+            </div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;line-height:1;color:{{ w2.pctColor }}">{{ w2.pct }}<span style="font-size:10px;font-weight:700">%</span></div>
+            </div>
+            <div style="font-size:11.5px;font-weight:700;line-height:1.2">{{ w2.name }}</div>
+            <div style="font-size:9.5px;color:oklch(0.62 0.01 260);line-height:1.25">{{ w2.stat }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;font-size:12px;color:oklch(0.55 0.01 260);line-height:1.6">
+      Grid responsivo (auto-fill) — nunca depende de largura de texto, então não quebra no mobile. % de desempenho em destaque tipográfico no topo do bloco de texto, cor = acento do elemento (mais forte quanto mais perto de 100%). Selo "Assinatura" sobre a imagem em vez de texto inline.
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ELEMENTS = { aero: 'oklch(0.75 0.14 175)' };
+const accentColor = ELEMENTS.aero;
+
+function pctColorFor(pct, accent) {
+  if (pct >= 95) return accent;
+  if (pct >= 80) return 'oklch(0.85 0.006 260)';
+  return 'oklch(0.7 0.01 260)';
+}
+
+const RAW_WEAPONS = [
+  { name: 'Lethean Elegy', stat: 'ATK / Crit Rate / Dano de Habilidade / Ignora DEF', pct: 100, slug: 'lethean-elegy', isSignature: true },
+  { name: 'Stringmaster', stat: 'ATK / Crit Rate / Dano%', pct: 82, slug: 'stringmaster', isSignature: false },
+  { name: 'Whispers of Sirens', stat: 'Shred de RES Havoc no Forte', pct: 80.2, slug: 'whispers-of-sirens', isSignature: false },
+  { name: 'Rime-Draped Sprouts', stat: 'ATK / Crit. DMG', pct: 77.1, slug: 'rime-draped-sprouts', isSignature: false },
+  { name: 'Luminous Hymn', stat: 'ATK / Crit Rate', pct: 75.2, slug: 'luminous-hymn', isSignature: false }
+];
+
+class Component extends DCLogic {
+  renderVals() {
+    const weapons = RAW_WEAPONS.map(w => ({
+      ...w,
+      pct: w.pct % 1 === 0 ? String(w.pct) : w.pct.toFixed(1).replace('.', ','),
+      pctColor: pctColorFor(w.pct, accentColor),
+      borderColor: w.isSignature ? accentColor.replace(')', ' / 45%)') : 'oklch(1 0 0 / 6%)'
+    }));
+    return { weapons, accentColor };
+  }
+}
+
+</script>
+</body>
+</html>

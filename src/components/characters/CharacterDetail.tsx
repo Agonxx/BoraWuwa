@@ -161,7 +161,7 @@ export function CharacterDetail() {
               open={sectionsOpen.synergy}
               onToggle={() => setSectionsOpen((s) => ({ ...s, synergy: !s.synergy }))}
             >
-              <SynergySection character={character} />
+              <SynergySection character={character} accentColor={accentColor} />
             </SectionCard>
 
             <SectionCard
@@ -172,7 +172,7 @@ export function CharacterDetail() {
               open={sectionsOpen.weapons}
               onToggle={() => setSectionsOpen((s) => ({ ...s, weapons: !s.weapons }))}
             >
-              <WeaponsSection character={character} />
+              <WeaponsSection character={character} accentColor={accentColor} />
             </SectionCard>
 
             <SectionCard
