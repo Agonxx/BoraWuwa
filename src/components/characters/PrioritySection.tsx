@@ -2,6 +2,13 @@ import type { Character, PriorityChip } from '../../data/types';
 import { withAlpha } from '../../data/elements';
 import { useIsDesktop } from '../../hooks/useIsDesktop';
 
+const DESKTOP_SHORT_LABELS: Record<string, string> = {
+  'Ataque Normal': 'Básico',
+  'Habilidade de Ressonância': 'Habilidade',
+  'Liberação de Ressonância': 'Ultimate',
+  'Habilidade de Introdução': 'Intro',
+};
+
 interface PriorityView {
   label: string;
   sep: string | null;
@@ -143,7 +150,7 @@ export function PrioritySection({ character, accentColor }: { character: Charact
                 fontWeight: 600,
               }}
             >
-              {p.label}
+              {DESKTOP_SHORT_LABELS[p.label] ?? p.label}
             </span>
           </span>
         ))}
