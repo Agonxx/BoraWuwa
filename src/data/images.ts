@@ -34,10 +34,11 @@ const HAS_IMAGE = new Set([
   'rover-havoc',
 ]);
 
-// A few characters have a nicer full splash art (vertical-ish, dramatic) instead of the
-// plain square icon crop everyone else uses — used for the card/hero image slots.
+// A few characters have a nicer vertical "card" art (~3:4, matches our portrait slot
+// almost exactly) instead of the plain square icon crop everyone else uses — used for
+// the card/hero image slots. Naming convention on prydwen.gg: `{shortcode}_card.webp`.
 const IMAGE_OVERRIDES: Record<string, string> = {
-  phrolova: '/img/characters/phrolova-full.webp',
+  phrolova: '/img/characters/phrolova-card.webp',
 };
 
 export function characterImageSrc(id: string): string | undefined {
