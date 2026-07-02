@@ -1,49 +1,7 @@
-// Ids with a real thumbnail dropped into public/img/characters/ (sourced from wuthering.gg
-// and, for Phrolova, prydwen.gg). Everything else falls back to the dashed ImageSlot
-// placeholder until real art is supplied.
-const HAS_IMAGE = new Set([
-  'cartethyia',
-  'jinhsi',
-  'changli',
-  'camellya',
-  'carlotta',
-  'zhezhi',
-  'shorekeeper',
-  'verina',
-  'yinlin',
-  'calcharo',
-  'jiyan',
-  'encore',
-  'xiangliyao',
-  'zani',
-  'roccia',
-  'brant',
-  'cantarella',
-  'augusta',
-  'phoebe',
-  'sigrika',
-  'ciaconna',
-  'sanhua',
-  'aero-rover',
-  'phrolova',
-  'lucilla',
-  'qiuyuan',
-  'danjin',
-  'galbrena',
-  'buling',
-  'rover-havoc',
-]);
-
-// A few characters have a nicer vertical "card" art (~3:4, matches our portrait slot
-// almost exactly) instead of the plain square icon crop everyone else uses — used for
-// the card/hero image slots. Naming convention on prydwen.gg: `{shortcode}_card.webp`.
-const IMAGE_OVERRIDES: Record<string, string> = {
-  phrolova: '/img/characters/phrolova-card.webp',
-};
-
-export function characterImageSrc(id: string): string | undefined {
-  if (IMAGE_OVERRIDES[id]) return IMAGE_OVERRIDES[id];
-  return HAS_IMAGE.has(id) ? `/img/characters/${id}.png` : undefined;
+// Card art for the full roster, sourced from prydwen.gg's character gallery (`{shortcode}_card.webp`,
+// saved locally keyed by our own id instead). Every character in CHARACTERS has a matching file.
+export function characterImageSrc(id: string): string {
+  return `/img/characters/${id}.webp`;
 }
 
 // Weapon and echo set icons, sourced from prydwen.gg, stored once and reused across any

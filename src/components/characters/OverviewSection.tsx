@@ -7,7 +7,7 @@ export function OverviewSection({ character }: { character: Character }) {
 
   const stats: [string, string, string?][] = [
     ['Elemento', el.label],
-    ['Papel', character.role],
+    ['Papel', character.role ?? '—'],
     ['Arma', character.detail.weapon],
     ['Raridade', character.detail.rarityStars, el.color],
   ];

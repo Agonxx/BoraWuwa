@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Character } from '../data/types';
 import { ELEMENTS, withAlpha } from '../data/elements';
+import { WEAPON_TYPES } from '../data/weaponTypes';
 import { characterImageSrc } from '../data/images';
 import { ImageSlot } from './ImageSlot';
 
@@ -24,12 +25,30 @@ export function CharacterCard({ character }: { character: Character }) {
         color: 'inherit',
       }}
     >
-      <ImageSlot
-        src={characterImageSrc(character.id)}
-        alt={character.name}
-        radius={12}
-        style={{ width: '100%', aspectRatio: '3 / 4' }}
-      />
+      <div style={{ position: 'relative' }}>
+        <ImageSlot
+          src={characterImageSrc(character.id)}
+          alt={character.name}
+          radius={12}
+          style={{ width: '100%', aspectRatio: '3 / 4' }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            top: 6,
+            right: 6,
+            background: 'oklch(0 0 0 / 55%)',
+            backdropFilter: 'blur(4px)',
+            borderRadius: 999,
+            padding: '2px 6px',
+            fontSize: 9,
+            fontWeight: 700,
+            color: character.rarity === 5 ? 'oklch(0.8 0.15 95)' : 'oklch(0.75 0.02 300)',
+          }}
+        >
+          {'★'.repeat(character.rarity)}
+        </span>
+      </div>
       <div>
         <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: 14 }}>
           {character.name}
@@ -45,7 +64,7 @@ export function CharacterCard({ character }: { character: Character }) {
             }}
           />
           <span style={{ fontSize: 11, color: 'var(--text-dim-1)' }}>
-            {el.label} · {character.role}
+            {el.label} · {WEAPON_TYPES[character.weaponType]}
           </span>
         </div>
       </div>

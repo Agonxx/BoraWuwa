@@ -5,6 +5,10 @@ export interface ElementInfo {
   color: string;
 }
 
+export type WeaponTypeKey = 'sword' | 'broadblade' | 'pistols' | 'gauntlets' | 'rectifier';
+
+export type Rarity = 4 | 5;
+
 export interface EchoSet {
   label: string;
   cost: string;
@@ -47,7 +51,9 @@ export interface Character {
   id: string;
   name: string;
   element: ElementKey;
-  role: string;
+  weaponType: WeaponTypeKey;
+  rarity: Rarity;
+  role?: string;
   ready: boolean;
   detail?: CharacterDetailData;
 }
