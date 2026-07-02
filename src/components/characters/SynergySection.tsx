@@ -104,7 +104,7 @@ export function SynergySection({ character, accentColor }: { character: Characte
                     }}
                   >
                     <ImageSlot
-                      src={characterImageSrc(m.id)}
+                      src={characterImageSrc(m.id, 'lq')}
                       alt={m.name}
                       radius={10}
                       style={{ width: '100%', aspectRatio: '3 / 4' }}

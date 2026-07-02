@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import type { Character, PriorityChip } from '../../data/types';
 import { withAlpha } from '../../data/elements';
 import { useIsDesktop } from '../../hooks/useIsDesktop';
@@ -11,7 +12,6 @@ const DESKTOP_SHORT_LABELS: Record<string, string> = {
 
 interface PriorityView {
   label: string;
-  sep: string | null;
   weight: number;
   tierLabel: string;
   tierColor: string;
@@ -50,7 +50,6 @@ function buildPriorityView(chips: PriorityChip[], accentColor: string): Priority
 
     return {
       label: c.label,
-      sep: c.sep,
       weight,
       tierLabel,
       tierColor: withAlpha(accentColor, Math.max(opacityPct, 45)),
@@ -102,67 +101,25 @@ export function PrioritySection({ character, accentColor }: { character: Charact
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 4,
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          fontSize: 12.5,
-        }}
-      >
-        {view.map((p, i) => (
-          <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            {p.sep === '=' && (
-              <span
-                style={{
-                  color: 'var(--text-dim-2)',
-                  fontWeight: 700,
-                  fontSize: 12,
-                  lineHeight: 1,
-                  padding: '0 3px',
-                }}
-              >
-                {p.sep}
-              </span>
-            )}
-            {p.sep && p.sep !== '=' && (
-              <span
-                style={{
-                  color: accentColor,
-                  fontWeight: 800,
-                  fontSize: 17,
-                  lineHeight: 1,
-                  padding: '0 2px',
-                }}
-              >
-                {p.sep}
-              </span>
-            )}
-            <span
-              style={{
-                background: 'var(--surface-3)',
-                border: `1px solid ${accentColor}`,
-                borderRadius: 8,
-                padding: '6px 10px',
-                fontWeight: 600,
-              }}
-            >
-              {DESKTOP_SHORT_LABELS[p.label] ?? p.label}
-            </span>
+    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 14, fontSize: 12.5 }}>
+      {view.map((p, i) => (
+        <Fragment key={i}>
+          {i > 0 && (
+            <span style={{ color: accentColor, fontWeight: 800, fontSize: 15, lineHeight: 1 }}>»</span>
+          )}
+          <span
+            style={{
+              background: 'var(--surface-3)',
+              border: `1px solid ${accentColor}`,
+              borderRadius: 8,
+              padding: '10px 16px',
+              fontWeight: 700,
+            }}
+          >
+            {DESKTOP_SHORT_LABELS[p.label] ?? p.label}
           </span>
-        ))}
-      </div>
-      <div style={{ fontSize: 11.5, color: 'var(--text-dim-3)', display: 'flex', gap: 16 }}>
-        <span>
-          <span style={{ color: accentColor, fontWeight: 800 }}>&gt;</span> = prioridade estrita
-        </span>
-        <span>
-          <span style={{ color: 'var(--text-dim-2)', fontWeight: 700 }}>=</span> = empate
-        </span>
-      </div>
+        </Fragment>
+      ))}
     </div>
   );
 }

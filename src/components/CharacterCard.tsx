@@ -27,7 +27,7 @@ export function CharacterCard({ character }: { character: Character }) {
     >
       <div style={{ position: 'relative' }}>
         <ImageSlot
-          src={characterImageSrc(character.id)}
+          src={characterImageSrc(character.id, 'md')}
           alt={character.name}
           radius={12}
           style={{ width: '100%', aspectRatio: '3 / 4' }}
