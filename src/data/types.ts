@@ -15,6 +15,7 @@ export interface EchoSet {
   mainStat: string;
   subStat: string;
   slug: string;
+  effect?: string;
 }
 
 export interface SynergyMember {
@@ -32,7 +33,7 @@ export interface Weapon {
   name: string;
   stat: string;
   slug: string;
-  pct: number;
+  pct?: number;
   isSignature?: boolean;
 }
 

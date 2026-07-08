@@ -153,9 +153,107 @@ export const CHARACTERS: Character[] = [
     },
   },
 
+  {
+    id: 'aemeath',
+    name: 'Aemeath',
+    element: 'fusion',
+    weaponType: 'sword',
+    rarity: 5,
+    role: 'Dano Principal',
+    ready: true,
+    detail: {
+      weapon: 'Espada',
+      rarityStars: '★★★★★',
+      overviewBullets: [
+        'A maior parte do dano vem de Circuito Forte e Liberação de Ressonância — evolua essas duas primeiro',
+        'Alterna entre forma humana e Mech, com dois sistemas de dano: Ruptura de Sintonia (foco single-target) e Explosão de Fusão (foco AoE)',
+        'Depende de Regen de Energia alto (~120% na ficha) pra não travar sem conseguir usar a Liberação',
+        'Rotação longa em campo — o combo completo existe pra soltar a Liberação de Ressonância duas vezes por ciclo',
+      ],
+      echoSets: [
+        {
+          label: 'Sigillum (principal) + Trailblazing Star (5pc)',
+          cost: '4 / 3 / 3 / 1 / 1',
+          mainStat: 'Crit Rate ou Crit DMG (proporção 1:2) no 4-cost · Dano Fusão/ATK% nos 3-cost · ATK% nos 1-cost',
+          subStat: 'Crit DMG ≈ Crit Rate > Regen de Energia > Dano de Liberação de Ressonância',
+          slug: 'trailblazing-star',
+          effect:
+            '2 peças: +10% Dano Fusão · 5 peças: +20% Crit Rate e +20% Dano Fusão por 8s ao causar Ruptura de Sintonia, Explosão de Fusão ou trocar de forma',
+        },
+      ],
+      synergyPairs: [
+        {
+          members: [
+            { id: 'aemeath', name: 'Aemeath' },
+            { id: 'lynae', name: 'Lynae' },
+            { id: 'mornye', name: 'Mornye' },
+          ],
+          rotation:
+            'Aemeath entra em Ruptura de Sintonia junto com Lynae → solta o combo completo (2 Liberações) → Mornye buffa ATK e amplifica dano → repete',
+          notes: [
+            'Lynae e Mornye maximizam Ruptura de Sintonia e ainda somam Dano de Liberação e amplificação geral de dano',
+            'Time de alvo único mais forte da Aemeath atualmente',
+          ],
+        },
+        {
+          members: [
+            { id: 'aemeath', name: 'Aemeath' },
+            { id: 'denia', name: 'Denia' },
+            { id: 'chisa', name: 'Chisa' },
+          ],
+          rotation:
+            'Aemeath ativa Explosão de Fusão → Denia aplica controle/dano contínuo em área → Chisa cura e buffa → repete',
+          notes: [
+            'Foco em AoE — bom em conteúdo com múltiplos alvos/ondas',
+            'Chisa sustenta o time enquanto mantém a rotação de Fusão ativa',
+          ],
+        },
+      ],
+      weapons: [
+        {
+          name: 'Everbright Polestar',
+          stat: '+12% Dano de Todos os Atributos · Liberação ignora 32% DEF e 10% RES Fusão por 8s após Ruptura de Sintonia ou Explosão de Fusão',
+          slug: 'everbright-polestar',
+          pct: 100,
+          isSignature: true,
+        },
+        {
+          name: 'Emerald of Genesis',
+          stat: '+12,8% Regen de Energia · +6% ATK (até 2 stacks, 10s) ao usar Habilidade de Ressonância',
+          slug: 'emerald-of-genesis',
+          pct: 83.5,
+        },
+        {
+          name: 'Red Spring',
+          stat: 'ATK 587 · Crit Rate 24,3%',
+          slug: 'red-spring',
+          pct: 83.5,
+        },
+        {
+          name: 'Emerald Sentence',
+          stat: 'ATK 588 · Crit Rate 24,3% (assinatura da Qiuyuan, usada como stat-stick)',
+          slug: 'emerald-sentence',
+          pct: 83.2,
+        },
+        {
+          name: 'Blazing Brilliance',
+          stat: 'ATK 587 · Crit. DMG 48,6%',
+          slug: 'blazing-brilliance',
+          pct: 82.9,
+        },
+      ],
+      priorityChips: [
+        { label: 'Circuito Forte', sep: null },
+        { label: 'Liberação de Ressonância', sep: '=' },
+        { label: 'Habilidade de Ressonância', sep: '>' },
+        { label: 'Ataque Normal', sep: '>' },
+        { label: 'Habilidade de Introdução', sep: '>' },
+      ],
+    },
+  },
+
   // Resto do roster (registro básico via prydwen.gg — sem guia de build ainda).
   { id: 'aalto', name: 'Aalto', element: 'aero', weaponType: 'pistols', rarity: 4, ready: false },
-  { id: 'aemeath', name: 'Aemeath', element: 'fusion', weaponType: 'sword', rarity: 5, ready: false },
   { id: 'augusta', name: 'Augusta', element: 'electro', weaponType: 'broadblade', rarity: 5, role: 'Dano Principal', ready: false },
   { id: 'baizhi', name: 'Baizhi', element: 'glacio', weaponType: 'rectifier', rarity: 4, ready: false },
   { id: 'brant', name: 'Brant', element: 'fusion', weaponType: 'sword', rarity: 5, role: 'Suporte', ready: false },

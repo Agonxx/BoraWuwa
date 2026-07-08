@@ -58,6 +58,19 @@ export function EchoesSection({ character, accentColor }: { character: Character
             <span style={{ color: 'var(--text-dim-2)' }}>Sub-stat</span>
             <span>{set.subStat}</span>
           </div>
+          {set.effect && (
+            <div
+              style={{
+                fontSize: 12,
+                color: 'var(--text-dim-1)',
+                lineHeight: 1.4,
+                paddingTop: 6,
+                borderTop: '1px solid oklch(1 0 0 / 8%)',
+              }}
+            >
+              {set.effect}
+            </div>
+          )}
         </div>
       ))}
     </div>

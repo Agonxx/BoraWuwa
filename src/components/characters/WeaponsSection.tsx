@@ -70,33 +70,37 @@ export function WeaponsSection({ character, accentColor }: { character: Characte
               padding: 10,
             }}
           />
-          <div>
-            <div
-              style={{
-                fontFamily: 'Space Grotesk, sans-serif',
-                fontWeight: 700,
-                fontSize: 20,
-                lineHeight: 1,
-                color: pctColor(w.pct, accentColor),
-              }}
-            >
-              {formatPct(w.pct)}
-              <span style={{ fontSize: 12, fontWeight: 700 }}>%</span>
-            </div>
-            <div
-              style={{
-                fontSize: 9.5,
-                fontWeight: 700,
-                color: 'var(--text-dim-3)',
-                textTransform: 'uppercase',
-                letterSpacing: '.03em',
-                marginTop: 2,
-              }}
-            >
-              desempenho
-            </div>
-          </div>
-          <div style={{ height: 1, background: 'oklch(1 0 0 / 8%)' }} />
+          {w.pct !== undefined && (
+            <>
+              <div>
+                <div
+                  style={{
+                    fontFamily: 'Space Grotesk, sans-serif',
+                    fontWeight: 700,
+                    fontSize: 20,
+                    lineHeight: 1,
+                    color: pctColor(w.pct, accentColor),
+                  }}
+                >
+                  {formatPct(w.pct)}
+                  <span style={{ fontSize: 12, fontWeight: 700 }}>%</span>
+                </div>
+                <div
+                  style={{
+                    fontSize: 9.5,
+                    fontWeight: 700,
+                    color: 'var(--text-dim-3)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '.03em',
+                    marginTop: 2,
+                  }}
+                >
+                  desempenho
+                </div>
+              </div>
+              <div style={{ height: 1, background: 'oklch(1 0 0 / 8%)' }} />
+            </>
+          )}
           <div>
             <div style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.25 }}>{w.name}</div>
             <div style={{ fontSize: 11, color: 'var(--text-dim-1)', marginTop: 3, lineHeight: 1.3 }}>
